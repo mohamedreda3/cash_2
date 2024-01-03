@@ -1,0 +1,122 @@
+.opertion_form input {
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.from_pay .from_input input,
+.accepted_page .filter_accepted .date_filter input,
+select {
+  width: 100%;
+  padding: 12px 13px !important;
+  border-radius: 3px !important;
+  border: 1px solid #ccc;
+  height: auto !important;
+}
+
+
+.ant-table-content {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.ant-space-item > div {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  gap: 2px;
+}
+
+.btn-close {
+  padding: 0.75em 0.65em;
+  width: fit-content;
+  height: fit-content;
+}
+
+#order-status-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: start;
+  justify-content: center;
+  width: 264px;
+  margin: 7px 0;
+}
+
+#order-status-form label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+#order-status-form input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#order-status-form button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #1e90ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+#order-status-form input {
+  display: none !important;
+}
+
+#order-status-form input:checked + span {
+  background: rgb(85, 16, 16);
+  color: white;
+}
+
+#yes,
+#no,
+#for_time {
+  display: inline-flex;
+  padding: 2.634px 19.752px;
+  align-items: flex-start;
+  gap: 13.168px;
+  border-radius: 10.534px;
+  background: #f57e771f;
+}
+
+#no {
+  background: #008000;
+  color: white;
+}
+#for_time {
+  background: #ffa500;
+}
+
+#yes {
+  background: #f57e771f;
+}
+
+.search_filter{
+  width: 100%;
+}
+
+.search_filter input{
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+.date_filter {
+  width: 100%;
+}
+
+.user_data .ant-modal.css-dev-only-do-not-override-14wwjjs,.user_data .ant-modal-content{
+  width: min(800px, 100%) !important;
+}

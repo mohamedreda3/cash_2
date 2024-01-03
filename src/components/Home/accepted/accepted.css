@@ -1,0 +1,214 @@
+.accepted_page {
+  padding: 20px;
+}
+
+.accepted_page .filter_accepted {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+
+.accepted_page .filter_accepted > div {
+  width: 48%;
+}
+
+.from_pay .from_input {
+  position: relative;
+}
+
+.from_pay .from_input input,
+select {
+  /* height: 30px; */
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.ant-select.css-dev-only-do-not-override-14wwjjs.ant-select-single.ant-select-show-arrow {
+  width: 100% !important;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.from_pay .from_input img {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.pay_methods {
+  position: absolute;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  width: 100%;
+  z-index: 9999;
+  border-radius: 10px;
+  padding: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.pay_methods .pay_method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  padding: 8px !important;
+}
+
+.pay_methods .pay_method:hover {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.pay_methods .pay_method img {
+  position: inherit;
+  margin: 0px;
+  margin-top: 10px;
+  margin-bottom: -4px;
+}
+
+.pay_methods .pay_method h4{
+  font-size: 14px !important;
+}
+
+.pay_input {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+}
+
+.accepted_page .filter_accepted .date_filter input {
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.ant-pagination-prev {
+  direction: rtl !important;
+  transform: rotate;
+  rotate: 180deg;
+}
+
+@media (max-width: 767px) {
+  .accepted_page .filter_accepted > div {
+    width: 100%;
+  }
+}
+
+.ant-pagination-next {
+  rotate: 180deg;
+}
+
+/* .ant-pagination.ant-table-pagination.ant-table-pagination-right.css-dev-only-do-not-override-14wwjjs {
+  direction: ltr;
+} */
+
+.filterForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.wallet_data img {
+  width: 36px;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.model {
+  overflow: auto;
+  position: fixed;
+  top: 50%;
+  width: min(800px, 80%);
+  left: 50%;
+  translate: -50% -50%;
+  background: white;
+  padding: 12px;
+  border-radius: 5px;
+  box-shadow: 1px 0px 24px -2px grey;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  height: -moz-fit-content;
+  height: 90%;
+}
+.model form {
+  position: absolute;
+  /* top: 50%; */
+  width: fit-content;
+  left: 50%;
+  translate: -50% 0;
+  background: white;
+  padding: 12px;
+  border-radius: 5px;
+  box-shadow: 1px 0px 24px -2px grey;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  height: fit-content;
+  bottom: 40px;
+}
+
+.inputfield {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.inputfield textarea {
+  outline: none;
+  padding: 8px;
+  resize: none;
+  width: 100%;
+  border: 0.1px solid grey;
+  border-radius: 4px;
+}
+
+.model form label {
+  margin: 10px 0;
+}
+.table_h {
+  width: 100%;
+  max-width: 100%;
+}
+
+.model h3 {
+  text-align: center;
+  width: fit-content;
+  padding: 10px 15px;
+  border-bottom: 0.1px solid rgb(217, 217, 217);
+  margin: 10px auto;
+}
+
+.con_img {
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 45px 0;
+}
+
+.table_h.con_img img {
+  height: 180px;
+}
+
+.h5, h5 {
+  font-size: 0.9rem !important;
+  margin: 11px 0 !important;
+}

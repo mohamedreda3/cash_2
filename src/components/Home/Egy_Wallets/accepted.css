@@ -1,0 +1,118 @@
+.accepted_page {
+  padding: 20px;
+}
+
+.accepted_page .filter_accepted {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+
+.accepted_page .filter_accepted>div {
+  width: 48%;
+}
+
+
+.from_pay .from_input {
+  position: relative;
+}
+
+.from_pay .from_input input {
+  height: 30px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.from_pay .from_input img {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.pay_methods {
+  position: absolute;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  width: 100%;
+  z-index: 9999;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.pay_methods .pay_method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  padding-top: 4px;
+}
+
+.pay_methods .pay_method:hover {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.pay_methods .pay_method img {
+  position: inherit;
+  margin: 0px;
+  margin-top: 10px;
+  margin-bottom: -4px;
+}
+
+.pay_input {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+}
+
+
+
+.accepted_page .filter_accepted .date_filter input {
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.ant-pagination-prev {
+  direction: rtl !important;
+  transform: rotate;
+  rotate: 180deg;
+}
+
+
+.walogo {
+  position: relative;
+}
+
+.walogo img {
+  position: absolute !important;
+  width: 20px !important;
+  left: 10px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  cursor: pointer !important;
+}
+
+@media (max-width:767px) {
+  .accepted_page .filter_accepted>div {
+    width: 100%;
+  }
+}
+
+.ant-pagination-next {
+  rotate: 180deg;
+}
+
+/* .ant-pagination.ant-table-pagination.ant-table-pagination-right.css-dev-only-do-not-override-14wwjjs {
+  direction: ltr;
+} */

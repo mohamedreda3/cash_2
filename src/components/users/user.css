@@ -1,0 +1,31 @@
+.users_page {
+  padding: 20px;
+}
+
+.users_page form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.users_page form input {
+  width: 100%;
+}
+
+.rowdiv input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 0.1px solid;
+  outline: none;
+  width: 270px;
+}
+
+.rowdiv {
+  display: flex;
+  margin: 20px 0;
+  gap: 10px;
+  flex-direction: column;
+  width: fit-content;
+  padding: 10px;
+}

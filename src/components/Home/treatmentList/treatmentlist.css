@@ -1,0 +1,61 @@
+.treatmenstlist {
+  overflow-y: auto;
+  width: 500px !important;
+}
+
+.treatmentdiv {
+  display: flex;
+  margin-bottom: 17px;
+  border-radius: 10px;
+  height: 100px;
+}
+
+.treatments_page {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  /* align-items: center; */
+  padding: 10px;
+  justify-content: center;
+  background: linear-gradient(90deg, #1413127c, rgba(13, 13, 13, 0.64)),
+    url("https://images.pexels.com/photos/6764232/pexels-photo-6764232.jpeg?auto=compress&cs=tinysrgb&w=600");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.treatments {
+  background-color: white;
+  padding: 20px;
+  width: min(700px, 100%);
+  border-radius: 4px;
+  margin: auto;
+  max-height: 74vh;
+}
+
+.treatmentdiv .treatment_icon {
+  width: 50px;
+  background-color: #0072bd;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 10px 10px 0px;
+}
+
+.treatment_icon>svg {
+  font-size: 30px;
+}
+
+.treatmentdiv .treatment_status {
+  padding: 10px;
+  background-color: #ccc;
+  flex: 1;
+  border-radius: 15px 0px 0px 15px;
+}
+
+.treatmentdiv .treatment_status>div {
+  display: flex;
+  margin-bottom: 5px;
+  align-items: center;
+  gap: 7px;
+}

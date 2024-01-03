@@ -1,0 +1,32 @@
+.home_page {
+  padding: 30px;
+}
+
+.home_page .accepted_not_tag {
+  width: 500px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.home_page .accepted_not_tag button {
+  width: 200px;
+  border-radius: 10px;
+  border: none;
+  height: 30px;
+  cursor: pointer;
+  text-transform: capitalize;
+  font-size: 18px;
+  font-weight: normal;
+  transition: .5s all ease-in-out;
+}
+
+.home_page .accepted_not_tag button.active {
+  color: white;
+  background-color: #0b5ed7;
+}

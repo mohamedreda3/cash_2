@@ -1,0 +1,19 @@
+.dashboard {
+  padding: 19px;
+  width: 100%;
+}
+
+.charts {
+  width: 100%;
+}
+
+
+.col-xl-8 {
+    width: 230px;
+    padding: 12px;
+    border-radius: 5px;
+}
+
+.col_sta.col-md-6.col-lg-3 {
+  box-shadow: 1px 0px 24px -2px rgb(230 230 230 / 52%) !important;
+}
