@@ -90,8 +90,8 @@ const User = () => {
   const renderusers = [
     {
       title: "#",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "user_id",
+      key: "user_id",
     },
     {
       title: "المعاملات السابقة",
@@ -412,6 +412,9 @@ const User = () => {
   }, [userId]);
 
   useEffect(() => {
+    setFilterUsers(users && users?.length ? [...users] : []);
+  }, [users]);
+  const filterUser = () => {
     if (users && users?.length)
       if (searchValue && searchValue?.length)
         setFilterUsers(
@@ -419,18 +422,28 @@ const User = () => {
             return (
               item.name?.includes(searchValue) ||
               item.full_name?.includes(searchValue) ||
-              item.email?.includes(searchValue)
+              item.email?.includes(searchValue) ||
+              item.user_id == searchValue ||
+              item.phone == searchValue ||
+              item?.n_id == searchValue
             );
           })
         );
       else setFilterUsers(users && users?.length ? [...users] : []);
-  }, [searchValue, users]);
+  };
 
+  useEffect(() => {
+    if (!searchValue || !searchValue.length)
+      setFilterUsers(users && users?.length ? [...users] : []);
+  }, [searchValue]);
   return (
     <div className="users_page">
       <div className="rowdiv">
         <label htmlFor="">بحث</label>
         <input type="text" onChange={(e) => setSearchValue(e.target.value)} />
+        <button className="btn btn-primary" onClick={() => filterUser()}>
+          بحث
+        </button>
       </div>
       <Table dataSource={filterUsers} columns={renderusers} />
       <Modal
@@ -482,7 +495,6 @@ const User = () => {
         }}
       >
         {" "}
-        {console.log(orderData)}
         <div className="row">
           <div className="col-lg-6 col-md-6 my-2">
             <label className="mb-1" htmlFor="">
