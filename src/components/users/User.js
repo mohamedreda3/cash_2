@@ -1,19 +1,38 @@
 import { Modal, Space, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import "./user.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AiOutlineCopy } from "react-icons/ai";
+import { AiFillEye, AiOutlineCopy } from "react-icons/ai";
+import { useNavigate } from "react-router";
+import ImageViewer from "react-simple-image-viewer";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 const User = () => {
+  const navigate = useNavigate();
+  const [showUserDataInfo, setShowUserDataInfo] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [orderData, setOrderData] = useState({});
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showedituser, setshowedituser] = useState(false);
   const [users, setusers] = useState(false);
   const [filterUsers, setFilterUsers] = useState(null);
   const [image, setOnImage] = useState(null);
+  const [currentImage, setCurrentImage] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
   const [showReset, setShowReset] = useState(null);
+  const openImageViewer = useCallback((index) => {
+    // console.log(index)
+    setCurrentImage(index);
+    console.log(index);
+    setIsViewerOpen(true);
+  }, []);
+
+  const closeImageViewer = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
+  };
   const getUsers = () => {
     axios
       .get("https://ahmed-cash.com/ahmed_cash/admin/select_all_users.php")
@@ -111,68 +130,57 @@ const User = () => {
     },
     {
       title: "الهوية",
-      render: (_, record) => (
-        <Space>
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              setShowReset(record?.user_id);
-            }}
-          >
-            الغاء تأكيد الهوية
-          </button>
-        </Space>
-      ),
+      render: (_, record) => <Space></Space>,
     },
     {
       title: "الاسم",
       dataIndex: "name",
       key: "name",
     },
-    {
-      title: "الاسم بالبطاقة",
-      dataIndex: "full_name",
-      key: "full_name",
-    },
-    {
-      title: "الرقم القومي",
-      dataIndex: "n_id",
-      key: "n_id",
-    },
-    {
-      title: "صورة البطاقة",
-      key: "confirm_identity_front",
-      render: (_, record) => (
-        <Space>
-          <img
-            style={{ height: "200px" }}
-            src={record?.confirm_identity_front}
-            alt=""
-            onClick={() => setOnImage(record?.confirm_identity_front)}
-          />
-        </Space>
-      ),
-    },
-    {
-      title: "البريد الإلكترونى",
-      dataIndex: "email",
-      key: "email",
-    },
+    // {
+    //   title: "الاسم بالبطاقة",
+    //   dataIndex: "full_name",
+    //   key: "full_name",
+    // },
+    // {
+    //   title: "الرقم القومي",
+    //   dataIndex: "n_id",
+    //   key: "n_id",
+    // },
+    // {
+    //   title: "صورة البطاقة",
+    //   key: "confirm_identity_front",
+    //   render: (_, record) => (
+    //     <Space>
+    //       <img
+    //         style={{ height: "200px" }}
+    //         src={record?.confirm_identity_front}
+    //         alt=""
+    //         onClick={() => setOnImage(record?.confirm_identity_front)}
+    //       />
+    //     </Space>
+    //   ),
+    // },
+    // {
+    //   title: "البريد الإلكترونى",
+    //   dataIndex: "email",
+    //   key: "email",
+    // },
     {
       title: "رقم الهاتف",
       dataIndex: "phone",
       key: "phone",
     },
-    {
-      title: "دور المستخدم",
-      dataIndex: "type",
-      key: "type",
-    },
-    {
-      title: "تاريخ الانضمام",
-      dataIndex: "join_date",
-      key: "join_date",
-    },
+    // {
+    //   title: "دور المستخدم",
+    //   dataIndex: "type",
+    //   key: "type",
+    // },
+    // {
+    //   title: "تاريخ الانضمام",
+    //   dataIndex: "join_date",
+    //   key: "join_date",
+    // },
     {
       title: "الحاله",
       key: "status",
@@ -193,6 +201,24 @@ const User = () => {
           )}
         </Space>
       ),
+    },
+    {
+      title: "تفاصيل العميل",
+      dataIndex: "type",
+      key: "type",
+      render: (_, record) => {
+        return (
+          <AiFillEye
+            onClick={(e) => {
+              setShowUserDataInfo(true);
+              setUserData(record);
+              // console.log(record)
+              // navigate("/userdata",{state:{userData:record}})
+            }}
+            style={{ cursor: "pointer", fontSize: "22px" }}
+          />
+        );
+      },
     },
     {
       title: "أوامر",
@@ -604,6 +630,81 @@ const User = () => {
             </div>
           </div>
         </div>
+      </Modal>
+      <Modal
+        title="بيانات العميل"
+        open={showUserDataInfo}
+        onOk={() => {
+          setShowUserDataInfo(false);
+        }}
+        onCancel={() => {
+          setShowUserDataInfo(false);
+        }}
+      >
+        <div className="user_data_comp">
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                openImageViewer(0);
+              }}
+            >
+              <TransformWrapper>
+                <TransformComponent>
+                  <img
+                    style={{
+                      width: "200px",
+                      height: "100px",
+                      margin: "auto",
+                      display: "block",
+                    }}
+                    src={userData.confirm_identity_front}
+                    alt="test"
+                  />
+                </TransformComponent>
+              </TransformWrapper>
+            </div>
+          </div>
+          <>
+            <div>
+              <h4>إسم الشخص: </h4>
+              <p>{userData.full_name}</p>
+            </div>
+            <div>
+              <h4>البريد الإلكترونى: </h4>
+              <p>{userData.email}</p>
+            </div>
+            <div>
+              <h4>تاريخ الإنضمام: </h4>
+              <p>{userData.join_date}</p>
+            </div>
+            <div>
+              <h4>رقم الهاتف: </h4>
+              <p>{userData.phone}</p>
+            </div>
+            <div>
+              <h4>الرقم القومى: </h4>
+              <p>{userData.n_id}</p>
+            </div>
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                setShowReset(userData?.user_id);
+              }}
+            >
+              الغاء تأكيد الهوية
+            </button>
+          </>
+        </div>
+        {isViewerOpen && (
+          <ImageViewer
+            src={[userData.confirm_identity_front]}
+            currentIndex={currentImage}
+            disableScroll={false}
+            closeOnClickOutside={true}
+            onClose={closeImageViewer}
+          />
+        )}
       </Modal>
     </div>
   );

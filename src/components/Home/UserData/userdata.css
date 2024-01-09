@@ -1,0 +1,31 @@
+.user_data_page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  overflow-x: hidden;
+}
+
+.user_data_page .user_data_comp {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 10px;
+  width: 500px;
+  max-width: 98%;
+  margin: auto;
+  border-radius: 10px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.user_data_comp>div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user_data_comp>div>* {
+  margin: 0px;
+}

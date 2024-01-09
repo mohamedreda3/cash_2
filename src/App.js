@@ -17,7 +17,8 @@ import { useEffect, useState } from "react";
 import TreatmentsList from "./components/Home/treatmentList/TreatmentList";
 import SocialMedia from "./components/Home/SocialMedia/SocialMedia";
 import SiteData from "./components/Home/siteInfo/siteInfo";
-
+import UserData from "./components/Home/UserData/UserData";
+import 'react-loading-skeleton/dist/skeleton.css'
 function App() {
   return (
     <div className="app">
@@ -33,6 +34,7 @@ function App() {
         <Route path="/treatments" element={<TreatmentsList />} />
         <Route path="/socialmedia" element={<SocialMedia />} />
         <Route path="/site_data" element={<SiteData />} />
+        <Route path="/userdata" element={<UserData/>}/>
       </Routes>
       <ToastContainer />
     </div>

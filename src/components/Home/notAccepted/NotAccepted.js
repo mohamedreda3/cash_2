@@ -1,14 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./notaccepted.css";
 import { Modal, Select, Space, Table } from "antd";
 import axios from "axios";
 import { AiFillEye, AiOutlineCloudUpload, AiOutlineCopy } from "react-icons/ai";
-
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { CloseButton, Spinner } from "reactstrap";
 import { Icon } from "@iconify/react";
 import CopyToClipboard from "react-copy-to-clipboard";
+import ImageViewer from 'react-simple-image-viewer';
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 const NotAccepted = () => {
+  const navigate=useNavigate();
+  const [userData,setUserData]=useState({});
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [showUserDataInfo,setShowUserDataInfo]=useState(false)
   const [showconfdialog, setshowconfdialog] = useState(false);
   const [accepted_data, setaccepted_data] = useState(false);
   const [acc_data, setAccData] = useState(accepted_data);
@@ -341,7 +348,17 @@ const NotAccepted = () => {
   ]);
 
   const [dateTo, setDateTo] = useState(false);
+  const openImageViewer = useCallback((index) => {
+    // console.log(index)
+    setCurrentImage(index);
+    console.log(index)
+    setIsViewerOpen(true);
+  }, []);
 
+  const closeImageViewer = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
+  };
   useEffect(() => {
     axios
       .get("https://ahmed-cash.com/ahmed_cash/admin/select_wallets.php")
@@ -454,6 +471,27 @@ const NotAccepted = () => {
       dataIndex: "type",
       key: "type",
     },
+    {
+      title: "تفاصيل العميل",
+      dataIndex: "type",
+      key: "type",
+      render:(_,record)=>{
+        return(
+          <div style={{textAlign:'center'}}>
+            <AiFillEye
+              onClick={(e) => {
+                setShowUserDataInfo(true);
+              setUserData(record);
+                // console.log(record)
+                // navigate("/userdata",{state:{userData:record}})
+              }}
+              style={{ cursor: "pointer" ,fontSize:'22px'}}
+            />
+          </div>
+        )
+      }
+    },
+
   ];
   const [image, setImage] = useState(false);
   const [reason, setReason] = useState(false);
@@ -832,6 +870,61 @@ const NotAccepted = () => {
           ) : null}
         </div>
       ) : null}
+      <Modal
+        title="بيانات العميل"
+        open={showUserDataInfo}
+        onOk={()=>{
+          setShowUserDataInfo(false)
+        }}
+        onCancel={()=>{
+          setShowUserDataInfo(false)
+        }}
+      >
+        <div className="user_data_comp">
+        <div style={{display:'flex',justifyContent:'center'}}>
+            <div style={{cursor:'pointer'}} onClick={()=>{
+            openImageViewer(0);
+          }} >
+              <TransformWrapper>
+      <TransformComponent>
+        <img style={{ width:'200px',height:'100px',margin:'auto',display:'block' }} src={userData.confirm_identity_front} alt="test" />
+      </TransformComponent>
+    </TransformWrapper>
+          </div>
+        </div>
+        <>
+          <div>
+            <h4>إسم الشخص: </h4>
+            <p>{userData.full_name}</p>
+          </div>
+          <div>
+            <h4>البريد الإلكترونى: </h4>
+            <p>{userData.email}</p>
+          </div>
+          <div>
+            <h4>تاريخ الإنضمام: </h4>
+            <p>{userData.join_date}</p>
+          </div>
+          <div>
+            <h4>رقم الهاتف: </h4>
+            <p>{userData.phone}</p>
+          </div>
+          <div>
+            <h4>الرقم القومى: </h4>
+            <p>{userData.n_id}</p>
+          </div>
+        </>
+      </div>
+      {isViewerOpen && (
+        <ImageViewer
+          src={[userData.confirm_identity_front]}
+          currentIndex={ currentImage }
+          disableScroll={ false }
+          closeOnClickOutside={ true }
+          onClose={ closeImageViewer }
+        />
+      )}
+      </Modal>
     </div>
   );
 };
