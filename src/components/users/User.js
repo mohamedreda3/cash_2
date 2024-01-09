@@ -128,10 +128,10 @@ const User = () => {
         </Space>
       ),
     },
-    {
-      title: "الهوية",
-      render: (_, record) => <Space></Space>,
-    },
+    // {
+    //   title: "الهوية",
+    //   render: (_, record) => <Space></Space>,
+    // },
     {
       title: "الاسم",
       dataIndex: "name",
