@@ -42,6 +42,23 @@ const User = () => {
         }
       });
   };
+  const requestIdentify = (id, ask_veri) => {
+    axios
+      .post("https://ahmed-cash.com/ahmed_cash/admin/ask_verification.php", {
+        user_id: id,
+        ask_veri: ask_veri === "0" ? "1" : "0",
+      })
+      .then((res) => {
+        if (res.data.status == "success") {
+          toast.success(res?.data?.message);
+          setShowUserDataInfo(false);
+          getUsers();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     getUsers();
   }, []);
@@ -686,14 +703,38 @@ const User = () => {
               <h4>الرقم القومى: </h4>
               <p>{userData.n_id}</p>
             </div>
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                setShowReset(userData?.user_id);
-              }}
-            >
-              الغاء تأكيد الهوية
-            </button>
+            {userData?.confirm_identity_front &&
+            userData?.n_id &&
+            userData?.confirm_identity_front?.length &&
+            userData?.n_id?.length ? (
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setShowReset(userData?.user_id);
+                }}
+              >
+                الغاء تأكيد الهوية
+              </button>
+            ) : null}
+            {userData?.confirm_identity_front &&
+            userData?.n_id &&
+            userData?.confirm_identity_front?.length &&
+            userData?.n_id?.length ? null : (
+              <button
+                className={
+                  userData?.ask_veri == "0"
+                    ? "btn btn-primary"
+                    : "btn btn-danger"
+                }
+                onClick={() => {
+                  requestIdentify(userData?.user_id, userData?.ask_veri);
+                }}
+              >
+                {userData?.ask_veri == "0"
+                  ? "طلب تأكيد الهوية"
+                  : "إلغاء طلب تأكيد الهوية"}
+              </button>
+            )}
           </>
         </div>
         {isViewerOpen && (
