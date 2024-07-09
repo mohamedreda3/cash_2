@@ -12,7 +12,7 @@ const Participent = () => {
   const [wallets, setwallets] = useState([]);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [orderData, setOrderData] = useState({});
-  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [partnerId, setPartnerId] = useState(false);
   const [showedituser, setshowedituser] = useState(false);
   const [users, setusers] = useState(false);
   const [joinRequest, setJoinRequest] = useState(false);
@@ -346,6 +346,14 @@ const Participent = () => {
                 >
                   سجل التحويلات
                 </button>
+                <button
+                  className="btn btn-success"
+                  onClick={() => {
+                    setPartnerId(record?.user_id)
+                  }}
+                >
+                 إلغاء الشراكة
+                </button>
               </>
             ) : null}
             {record?.participent ? (
@@ -481,6 +489,36 @@ const Participent = () => {
         الرصيد الذي سيتم سحبه : {parseFloat(balance) / 100}جنية
       </Modal>
 
+      <Modal
+        title="إلغاء الشراكة"
+        open={partnerId}
+        onCancel={() => {
+          setPartnerId(false);
+        }}
+        onOk={() => {
+          axios
+            .post(
+              "https://ahmed-cash.com/ahmed_cash/admin/cancel_partner.php",
+              JSON.stringify({
+          
+                partner_id: partnerId,
+              })
+            )
+            .then((res) => {
+              if (res.data.status == "success") {
+                toast.success(res.data.message);
+                setPartnerId(null);
+                getUsers();
+              } else {
+                toast.error(res.data.message);
+              }
+            });
+        }}
+        okText={"تأكيد"}
+        cancelText={"رفض"}
+      >
+       هل أنت متأكد من إلغاء الشراكة ؟
+      </Modal>
       {openWaslSoura && (
         <ImageViewer
           src={[soura]}

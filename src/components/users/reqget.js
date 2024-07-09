@@ -45,12 +45,19 @@ const ReqGet = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
 
   const getColumnSearchProps = (dataIndex, title) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
       <div style={{ padding: 8 }}>
         <Input
           placeholder={`بحث ${title}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
@@ -64,15 +71,25 @@ const ReqGet = () => {
           >
             بحث
           </Button>
-          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
             إعادة
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => <i className="fa fa-filter" style={{ color: filtered ? "#1890ff" : undefined }} />,
+    filterIcon: (filtered) => (
+      <i
+        className="fa fa-filter"
+        style={{ color: filtered ? "#1890ff" : undefined }}
+      />
+    ),
     onFilter: (value, record) =>
-      record[dataIndex] && record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+      record[dataIndex] &&
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => document.getElementById("searchInput").select(), 100);
@@ -103,7 +120,9 @@ const ReqGet = () => {
       dataIndex: "amount",
       key: "amount",
       ...getColumnSearchProps("amount", "الكمية"),
-      render: (_, record) => <Space>{parseFloat(record?.amount) / 100} جنية</Space>,
+      render: (_, record) => (
+        <Space>{parseFloat(record?.amount) / 100} جنية</Space>
+      ),
     },
     {
       title: "تاريخ",
@@ -126,7 +145,10 @@ const ReqGet = () => {
         { text: "تم الرفض", value: "refused" },
         { text: "تم الاستلام", value: "done" },
       ],
-      onFilter: (value, record) => record.status === value,
+      defaultFilteredValue : ['request'], 
+      onFilter: (value, record) => {
+        return record.status === value;
+      },
     },
     {
       title: "أدوات",

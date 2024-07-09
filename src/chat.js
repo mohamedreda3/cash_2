@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import "./adminPanel.css";
 import { database } from "./firebase";
 
-const AdminPanel = ({ isHeader }) => {
+const AdminPanel = ({ isHeader, setIfUnRead, setUnReadCountChats }) => {
   const [chats, setChats] = useState([]);
   const [messages, setMessages] = useState([]);
   const [selectedChatId, setSelectedChatId] = useState(null);
@@ -13,7 +13,6 @@ const AdminPanel = ({ isHeader }) => {
   const [unreadCount, setUnreadCount] = useState({});
   const [lastMessageTimestamps, setLastMessageTimestamps] = useState({});
   const [initialLoad, setInitialLoad] = useState(true);
-
   // Effect to fetch chats and initialize unread counts
   useEffect(() => {
     const chatRef = ref(database, `chats`);
@@ -120,7 +119,26 @@ const AdminPanel = ({ isHeader }) => {
 
     return () => unsubscribe();
   }, [lastMessageTimestamps, initialLoad]);
-
+  useEffect(() => {
+    if (unreadCount) {
+      try {
+        if (setIfUnRead)
+          setIfUnRead(
+            Object.keys(unreadCount)
+              ?.map((item) => item)
+              ?.reduce((acc, cur) => unreadCount[cur] + acc, 0)
+          );
+        if (setUnReadCountChats)
+          setUnReadCountChats(
+            Object.keys(unreadCount)
+              ?.map((item) => item)
+              ?.filter((item) => unreadCount[item] > 0)?.length
+          );
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, [unreadCount]);
   // Function to play notification sound
   const playNotificationSound = () => {
     const audioElement = document.getElementById("messageSound");

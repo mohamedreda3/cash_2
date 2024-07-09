@@ -7,6 +7,9 @@ import AdminPanel from "../../chat";
 const Header = () => {
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(true);
+  const [unRead, setIfUnRead] = useState(null);
+  const [unReadChats, setUnReadCountChats] = useState(0);
+
   return (
     <Fragment>
       {" "}
@@ -14,7 +17,7 @@ const Header = () => {
         <Navigate to="/adlogin" />
       ) : (
         <div className={toggle ? "header" : "header active"}>
-          <AdminPanel isHeader={true}/>
+          <AdminPanel isHeader={true} setIfUnRead={setIfUnRead} setUnReadCountChats={setUnReadCountChats}/>
           <div
             onClick={() => {
               navigate("/");
@@ -54,7 +57,10 @@ const Header = () => {
               طلبات السحب
             </NavLink>
             <NavLink to={"/chat"} onClick={() => setToggle(true)}>
-              المحادثات
+              <div className="rowSpaceBetweenDiv">
+                <span> المحادثات</span>
+                <span className="unread-count">{unReadChats}</span>
+              </div>
             </NavLink>
             {
               // <NavLink to={"/employees"} onClick={() => setToggle(true)}>
