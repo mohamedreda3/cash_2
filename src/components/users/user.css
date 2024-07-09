@@ -29,3 +29,15 @@
   width: fit-content;
   padding: 10px;
 }
+
+@media (max-width: 772px) {
+  .admin-container {
+    flex-direction: column;
+  }
+
+  .chats-list {
+    min-height: 50vh !important;
+    max-height: 50vh !important;
+    min-width: 100% !important;
+  }
+}

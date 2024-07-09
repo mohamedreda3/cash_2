@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import ImageViewer from "react-simple-image-viewer";
 import "./user.css";
 const Participent = () => {
   const navigate = useNavigate();
@@ -15,6 +16,9 @@ const Participent = () => {
   const [showedituser, setshowedituser] = useState(false);
   const [users, setusers] = useState(false);
   const [joinRequest, setJoinRequest] = useState(false);
+  const [openWaslSoura, setOpenWaslSoura] = useState(null);
+  const [soura, setSoura] = useState(null);
+
   const [filterUsers, setFilterUsers] = useState(null);
   const [image, setOnImage] = useState(null);
   const [currentImage, setCurrentImage] = useState(0);
@@ -39,7 +43,7 @@ const Participent = () => {
         }
       )
       .then((res) => {
-        setGetData(res?.data?.message);
+        setGetData(res?.data?.message?.filter(item=>item?.status == "request"));
       });
   };
 
@@ -52,6 +56,8 @@ const Participent = () => {
   const closeImageViewer = () => {
     setCurrentImage(0);
     setIsViewerOpen(false);
+    setOpenWaslSoura(null)
+    setSoura(null)
   };
   const getUsers = () => {
     axios
@@ -179,9 +185,7 @@ const Participent = () => {
       title: "الكمية",
       dataIndex: "amount",
       render: (_, record) => (
-        <Space>
-          {parseFloat(record?.amount)/100} جنية
-        </Space>
+        <Space>{parseFloat(record?.amount) / 100} جنية</Space>
       ),
     },
     {
@@ -272,11 +276,35 @@ const Participent = () => {
       key: "address",
     },
     {
-      title: "إجمالي العائد",
+      title: "صورة البطاقة",
       dataIndex: "phone",
-      key: "total",
+      render: (_, record) => (
+        <Space>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+              width: "100%",
+            }}
+          >
+            <img
+              src={record?.identity}
+              alt=""
+              width={60}
+              style={{cursor:"pointer"}}
+              height={60}
+              onClick={() => {
+                setSoura(record?.identity);
+                setOpenWaslSoura(true);
+              }}
+            />
+          </div>
+        </Space>
+      ),
     },
- 
+
     {
       title: "أوامر",
       key: "action",
@@ -373,7 +401,7 @@ const Participent = () => {
         </button>
       </div>
       <Table dataSource={filterUsers} columns={renderusers} />
-   
+
       <Modal
         title=""
         open={showReset}
@@ -390,8 +418,7 @@ const Participent = () => {
       >
         <img src={image} alt="" style={{ width: "100%" }} />
       </Modal>
-    
-    
+
       <Modal
         title="سحب الرصيد"
         open={specifyPercetage}
@@ -453,7 +480,16 @@ const Participent = () => {
       >
         الرصيد الذي سيتم سحبه : {parseFloat(balance) / 100}جنية
       </Modal>
-   
+
+      {openWaslSoura && (
+        <ImageViewer
+          src={[soura]}
+          currentIndex={0}
+          disableScroll={false}
+          closeOnClickOutside={true}
+          onClose={closeImageViewer}
+        />
+      )}
     </div>
   );
 };
