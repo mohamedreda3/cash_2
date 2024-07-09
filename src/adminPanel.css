@@ -1,0 +1,230 @@
+/* Styles for the admin container */
+.admin-container {
+  display: flex;
+  justify-content: space-between;
+  height: 100vh; /* Set the height to 100% of the viewport height */
+  padding: 20px;
+}
+
+/* Styles for the chat list */
+.chats-list {
+  width: 35%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enable scrolling if the content exceeds the height */
+}
+
+.chat-item {
+  padding: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.chat-item:hover {
+  background-color: #e0e0e0;
+}
+
+.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Styles for the chat messages */
+.chat-messages {
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enable scrolling if the content exceeds the height */
+  height: calc(100vh - 40px); /* Calculate the height minus padding */
+}
+
+.chat-message {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.chat-message.own {
+  background-color: #dcf8c6;
+  align-self: flex-end;
+}
+
+.chat-message strong {
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+}
+
+.chat-message span {
+  display: block;
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* Styles for message actions */
+.message-actions {
+  margin-top: 5px;
+}
+
+.edit-button,
+.delete-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  background-color: #0056b3;
+}
+
+/* Styles for message input */
+.message-input {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.message-input input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.message-input button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.message-input button:hover {
+  background-color: #218838;
+}
+
+.admin-container > *,
+.chat-messages {
+  height: 100% !important;
+}
+.admin-container {
+  display: flex;
+  justify-content: space-between;
+  height: 85vh;
+  padding: 20px;
+}
+
+.chat-messages {
+  height: 69vh !important;
+}
+
+.columnDiv {
+  width: 100% !important;
+  padding: 10px !important;
+}
+
+.chat-message strong {
+  display: block;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.chat-message span {
+  display: block;
+  font-size: 0.8em;
+  color: #666;
+  text-align: right;
+}
+
+.chat-input-container {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.chat-input::placeholder {
+  font-size: 14px;
+}
+
+.chat-send-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-send-button:hover {
+  background-color: #0056b3;
+}
+
+.chat-cancel-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #ff4444;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chat-cancel-button:hover {
+  background-color: #cc0000;
+}
+
+span.unread-count {
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  display: inline-block;
+  margin-right: auto;
+  background: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  color: white;
+}
+
+.admin-container.hidden {
+  display: none;
+}
+
+
+
+#root > div > div.admin-container > div.columnDiv > div.chat-messages > div > span.seen{
+text-align: left !important;
+font-weight:900
+}

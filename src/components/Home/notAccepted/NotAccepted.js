@@ -11,16 +11,17 @@ import ImageViewer from 'react-simple-image-viewer';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 const NotAccepted = () => {
-  const navigate=useNavigate();
-  const [userData,setUserData]=useState({});
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({});
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
-  const [showUserDataInfo,setShowUserDataInfo]=useState(false)
+  const [showUserDataInfo, setShowUserDataInfo] = useState(false);
   const [showconfdialog, setshowconfdialog] = useState(false);
   const [accepted_data, setaccepted_data] = useState(false);
   const [acc_data, setAccData] = useState(accepted_data);
   const [showModel, setShowModel] = useState(false);
   const [modelData, setModelData] = useState(false);
+  const [openWaslSoura, setOpenWaslSoura] = useState(null);
   const renderdata = [
     {
       title: "رقم العمليه",
@@ -245,7 +246,6 @@ const NotAccepted = () => {
       ),
     },
 
-
     {
       title: "المبلغ المرسل",
       dataIndex: "amount_sent",
@@ -348,17 +348,22 @@ const NotAccepted = () => {
   ]);
 
   const [dateTo, setDateTo] = useState(false);
+
+  const [soura, setSoura] = useState(null);
+
   const openImageViewer = useCallback((index) => {
     // console.log(index)
     setCurrentImage(index);
-    console.log(index)
     setIsViewerOpen(true);
   }, []);
 
   const closeImageViewer = () => {
     setCurrentImage(0);
     setIsViewerOpen(false);
+    setOpenWaslSoura(null);
+    setSoura(null);
   };
+
   useEffect(() => {
     axios
       .get("https://ahmed-cash.com/ahmed_cash/admin/select_wallets.php")
@@ -389,9 +394,7 @@ const NotAccepted = () => {
   const [date, setDate] = useState(false);
   const getData = () => {
     axios
-      .get(
-        "https://ahmed-cash.com/ahmed_cash/admin/select_pending_orders.php"
-      )
+      .get("https://ahmed-cash.com/ahmed_cash/admin/select_pending_orders.php")
       .then((res) => {
         if (res.data.status == "success") {
           setaccepted_data(res.data.message);
@@ -475,28 +478,27 @@ const NotAccepted = () => {
       title: "تفاصيل العميل",
       dataIndex: "type",
       key: "type",
-      render:(_,record)=>{
-        return(
-          <div style={{textAlign:'center'}}>
+      render: (_, record) => {
+        return (
+          <div style={{ textAlign: 'center' }}>
             <AiFillEye
               onClick={(e) => {
                 setShowUserDataInfo(true);
-              setUserData(record);
+                setUserData(record);
                 // console.log(record)
                 // navigate("/userdata",{state:{userData:record}})
               }}
-              style={{ cursor: "pointer" ,fontSize:'22px'}}
+              style={{ cursor: "pointer", fontSize: '22px' }}
             />
           </div>
-        )
-      }
+        );
+      },
     },
-
   ];
   const [image, setImage] = useState(false);
   const [reason, setReason] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imageLink, setImageLink] = useState(false)
+  const [imageLink, setImageLink] = useState(false);
   const uploadImage = async () => {
     setLoading(true);
     const formData = new FormData();
@@ -511,7 +513,7 @@ const NotAccepted = () => {
           toast.success("تم الرفع بنجاح");
           setLoading(false);
           console.log(res);
-          setImageLink(res.data.message)
+          setImageLink(res.data.message);
         } else {
           toast.error(res.data.message);
           setLoading(false);
@@ -602,10 +604,11 @@ const NotAccepted = () => {
                         src={item.wallet_logo}
                         alt=""
                       />
-                      <h4>{item.wallet_name ? item.wallet_name : ""}</h4>
+                      <h4>{item?.wallet_name ? item?.wallet_name : ""}</h4>
                       <h6>
-                        {item.minimum_order_val && item.minimum_order_val != ""
-                          ? "(" + item.minimum_order_val + ")"
+                        {item?.minimum_order_val &&
+                        item?.minimum_order_val != ""
+                          ? "(" + item?.minimum_order_val + ")"
                           : "none"}
                       </h6>
                     </div>;
@@ -690,7 +693,7 @@ const NotAccepted = () => {
                         <h6>
                           ((
                           {item.minimum_order_val &&
-                            item.minimum_order_val != ""
+                          item.minimum_order_val != ""
                             ? item.minimum_order_val
                             : ""}
                           ))
@@ -744,16 +747,18 @@ const NotAccepted = () => {
           />
         </div>
         <div className="search_filter">
-          <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>رقم العملية</h5>
+          <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>
+            رقم العملية
+          </h5>
           <div style={{ display: "flex", gap: "10px" }}>
-            <input
-              type="text"
-              ref={search_filter}
-
-            />
-            <button className="btn btn-success"
+            <input type="text" ref={search_filter} />
+            <button
+              className="btn btn-success"
               onClick={() => setSearchQuery(search_filter?.current?.value)}
-            > بحث </button>
+            >
+              {" "}
+              بحث{" "}
+            </button>
           </div>
         </div>
       </div>
@@ -773,7 +778,14 @@ const NotAccepted = () => {
           </div>
           <div className="table_h con_img">
             <h3> صورة الوصل </h3>
-            <img src={modelData.user_photo_url} alt="" />
+            <img
+              src={modelData.user_photo_url}
+              alt=""
+              onClick={() => {
+                setSoura(modelData?.user_photo_url);
+                setOpenWaslSoura(true);
+              }}
+            />
           </div>
           <div className="table_h">
             <h3> تفاصيل العميل </h3>
@@ -840,7 +852,9 @@ const NotAccepted = () => {
                     type="file"
                     onChange={(e) =>
                       setImage(
-                        e.currentTarget.files ? e.currentTarget.files[0] : false
+                        e.currentTarget.files
+                          ? e.currentTarget?.files[0]
+                          : false
                       )
                     }
                   />
@@ -870,60 +884,81 @@ const NotAccepted = () => {
           ) : null}
         </div>
       ) : null}
+      {openWaslSoura && (
+        <ImageViewer
+          src={[soura]}
+          currentIndex={0}
+          disableScroll={false}
+          closeOnClickOutside={true}
+          onClose={closeImageViewer}
+        />
+      )}
       <Modal
         title="بيانات العميل"
         open={showUserDataInfo}
-        onOk={()=>{
-          setShowUserDataInfo(false)
+        onOk={() => {
+          setShowUserDataInfo(false);
         }}
-        onCancel={()=>{
-          setShowUserDataInfo(false)
+        onCancel={() => {
+          setShowUserDataInfo(false);
         }}
       >
         <div className="user_data_comp">
-        <div style={{display:'flex',justifyContent:'center'}}>
-            <div style={{cursor:'pointer'}} onClick={()=>{
-            openImageViewer(0);
-          }} >
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                openImageViewer(0);
+              }}
+            >
               <TransformWrapper>
-      <TransformComponent>
-        <img style={{ width:'200px',height:'100px',margin:'auto',display:'block' }} src={userData.confirm_identity_front} alt="test" />
-      </TransformComponent>
-    </TransformWrapper>
+                <TransformComponent>
+                  <img
+                    style={{
+                      width: '200px',
+                      height: '100px',
+                      margin: 'auto',
+                      display: 'block',
+                    }}
+                    src={userData?.confirm_identity_front}
+                    alt="test"
+                  />
+                </TransformComponent>
+              </TransformWrapper>
+            </div>
           </div>
+          <>
+            <div>
+              <h4>إسم الشخص: </h4>
+              <p>{userData.full_name}</p>
+            </div>
+            <div>
+              <h4>البريد الإلكترونى: </h4>
+              <p>{userData.email}</p>
+            </div>
+            <div>
+              <h4>تاريخ الإنضمام: </h4>
+              <p>{userData.join_date}</p>
+            </div>
+            <div>
+              <h4>رقم الهاتف: </h4>
+              <p>{userData.phone}</p>
+            </div>
+            <div>
+              <h4>الرقم القومى: </h4>
+              <p>{userData.n_id}</p>
+            </div>
+          </>
         </div>
-        <>
-          <div>
-            <h4>إسم الشخص: </h4>
-            <p>{userData.full_name}</p>
-          </div>
-          <div>
-            <h4>البريد الإلكترونى: </h4>
-            <p>{userData.email}</p>
-          </div>
-          <div>
-            <h4>تاريخ الإنضمام: </h4>
-            <p>{userData.join_date}</p>
-          </div>
-          <div>
-            <h4>رقم الهاتف: </h4>
-            <p>{userData.phone}</p>
-          </div>
-          <div>
-            <h4>الرقم القومى: </h4>
-            <p>{userData.n_id}</p>
-          </div>
-        </>
-      </div>
-      {isViewerOpen && (
-        <ImageViewer
-          src={[userData.confirm_identity_front]}
-          currentIndex={ currentImage }
-          disableScroll={ false }
-          closeOnClickOutside={ true }
-          onClose={ closeImageViewer }
-        />
-      )}
+        {isViewerOpen && (
+          <ImageViewer
+            src={[userData.confirm_identity_front]}
+            currentIndex={currentImage}
+            disableScroll={false}
+            closeOnClickOutside={true}
+            onClose={closeImageViewer}
+          />
+        )}
       </Modal>
     </div>
   );

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import "./accepted.css";
 import { Modal, Select, Space, Table } from "antd";
 import axios from "axios";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineCopy } from "react-icons/ai";
@@ -7,11 +6,12 @@ import { Icon } from "@iconify/react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import { CloseButton } from "reactstrap";
-import ImageViewer from 'react-simple-image-viewer';
-import { useNavigate } from "react-router";
+import ImageViewer from "react-simple-image-viewer";
+import { useNavigate, useParams } from "react-router";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-const Accepted = () => {
+const History = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [showconfdialog, setshowconfdialog] = useState(false);
@@ -24,8 +24,8 @@ const Accepted = () => {
   const renderdata = [
     {
       title: "رقم العمليه",
-      dataIndex: "order_id",
-      key: "order_id",
+      dataIndex: "transaction_id",
+      key: "transaction_id",
     },
     {
       title: "الحالة",
@@ -33,9 +33,9 @@ const Accepted = () => {
       render: (_, record) => (
         <Space>
           <div className="actions">
-            {record?.status == "cancel" ? (
+            {record?.order_data?.status == "cancel" ? (
               <span style={{ color: "#085394" }}> عملية ملغية</span>
-            ) : record?.status == "refused" ? (
+            ) : record?.order_data?.status == "refused" ? (
               <span style={{ color: "red" }}> عملية مرفوضة</span>
             ) : (
               <span style={{ color: "green" }}> عملية ناجحة</span>
@@ -46,25 +46,12 @@ const Accepted = () => {
     },
 
     {
-      title: "إرسال من",
-      dataIndex: "source_Wallet",
-      key: "send",
-      render: (_, record) => (
-        <Space>
-          <div className="wallet_data">
-            <img src={record?.source_Wallet.wallet_logo} alt="" />
-            <span>{record?.source_Wallet.wallet_name}</span>
-          </div>
-        </Space>
-      ),
-    },
-    {
       title: "رقم المرسل",
       key: "address",
       render: (_, record) => (
         <Space>
           <div className="actions">
-            <span>{record.user_from_id}</span>
+            <span>{record?.order_data?.user_from_id}</span>
           </div>
         </Space>
       ),
@@ -75,9 +62,9 @@ const Accepted = () => {
       render: (_, record) => (
         <Space>
           <div className="actions">
-            <span>{record.source_address}</span>
+            <span>{record?.order_data?.source_address}</span>
             <CopyToClipboard
-              text={record.source_address}
+              text={record?.order_data?.source_address}
               onCopy={() => toast.success("تم نسخ الرقم")}
             >
               <AiOutlineCopy style={{ cursor: "pointer" }} />
@@ -93,25 +80,13 @@ const Accepted = () => {
       render: (_, record) => (
         <Space>
           <div className="actions">
-            <span>{record.wallet_from_id}</span>
+            <span>{record?.order_data?.wallet_from_id}</span>
           </div>
         </Space>
       ),
     },
 
-    {
-      title: "إرسال إلي",
-      dataIndex: "destination_Wallet",
-      key: "send",
-      render: (_, record) => (
-        <Space>
-          <div className="wallet_data">
-            <img src={record?.destination_Wallet.wallet_logo} alt="" />
-            <span>{record?.destination_Wallet.wallet_name}</span>
-          </div>
-        </Space>
-      ),
-    },
+  
 
     {
       title: "المبلغ المرسل",
@@ -119,54 +94,30 @@ const Accepted = () => {
       key: "amount_sent",
     },
     {
-      title: "المبلغ المستقبل",
-      dataIndex: "received_quantity",
-      key: "received_quantity",
+      title: "الأموال المكتسبة",
+      dataIndex: "partner_money",
+      key: "partner_money",
+      render: (_, record) => (
+        <Space>
+          <div className="wallet_data">
+            <span>{parseInt(record?.partner_money)/100}جنية</span>
+          </div>
+        </Space>
+      ),
     },
-    {
-      title: "التاريخ",
-      dataIndex: "day",
-      key: "day",
-    },
-    {
-      title: "الوقت",
-      dataIndex: "time",
-      key: "time",
-    },
-
-    {
-      title: "سبب الرفض",
-      dataIndex: "refused_reason",
-      key: "refused_reason",
-    },
+   
     {
       title: "تم التحويل بواسطة",
       key: "trans_by",
       render: (_, record) => (
         <Space>
           <div className="wallet_data">
-            <span>{record?.userData?.name}</span>
+            <span>{record?.order_data?.userData?.name}</span>
           </div>
         </Space>
       ),
     },
-    {
-      title: "عرض العملية",
-      key: "view",
-      render: (_, record) => (
-        <Space>
-          <div className="actions">
-            <AiFillEye
-              onClick={(e) => {
-                setShowModel(true);
-                setModelData(record);
-              }}
-              style={{ cursor: "pointer" }}
-            />
-          </div>
-        </Space>
-      ),
-    },
+  
   ];
 
   const userDataHeaders = [
@@ -208,7 +159,7 @@ const Accepted = () => {
               setUserData(record);
               // navigate("/userdata",{state:{userData:record}})
             }}
-            style={{ cursor: "pointer", fontSize: '22px' }}
+            style={{ cursor: "pointer", fontSize: "22px" }}
           />
         );
       },
@@ -363,61 +314,61 @@ const Accepted = () => {
       id: 1,
       name: "فودافون كاش",
       money: "L.E",
-      img: require("../../../assets/vodafon.png"),
+      img: require("../../assets/vodafon.png"),
     },
     {
       id: 2,
       name: "انستا باي",
       money: "L.E",
-      img: require("../../../assets/insta.png"),
+      img: require("../../assets/insta.png"),
     },
     {
       id: 3,
       name: "اتصالات كاش",
       money: "L.E",
-      img: require("../../../assets/etisalat.png"),
+      img: require("../../assets/etisalat.png"),
     },
     {
       id: 4,
       name: "اورانج كاش",
       money: "L.E",
-      img: require("../../../assets/orange.png"),
+      img: require("../../assets/orange.png"),
     },
     {
       id: 5,
       name: "وي",
       money: "L.E",
-      img: require("../../../assets/we.png"),
+      img: require("../../assets/we.png"),
     },
     {
       id: 6,
       name: "بيرفكت مونى",
       money: "UDS",
-      img: require("../../../assets/perfectmo.png"),
+      img: require("../../assets/perfectmo.png"),
     },
     {
       id: 7,
       name: "باير",
       money: "UDS",
-      img: require("../../../assets/pyer.png"),
+      img: require("../../assets/pyer.png"),
     },
     {
       id: 8,
       name: "اسكريل",
       money: "UDS",
-      img: require("../../../assets/skirll.png"),
+      img: require("../../assets/skirll.png"),
     },
     {
       id: 9,
       name: "وايز",
       money: "UDS",
-      img: require("../../../assets/wise.png"),
+      img: require("../../assets/wise.png"),
     },
     {
       id: 10,
       name: "pyypl",
       money: "UDS",
-      img: require("../../../assets/pyyel.png"),
+      img: require("../../assets/pyyel.png"),
     },
   ]);
   const openImageViewer = useCallback((index) => {
@@ -491,7 +442,12 @@ const Accepted = () => {
     setfromname(false);
     settoname(false);
     axios
-      .get("https://ahmed-cash.com/ahmed_cash/admin/select_orders_history.php")
+      .post(
+        "https://ahmed-cash.com/ahmed_cash/admin/select_partner_trans_history.php",
+        {
+          partner_id: id,
+        }
+      )
       .then((res) => {
         if (res.data.status == "success") {
           setaccepted_data(res.data.message);
@@ -502,6 +458,7 @@ const Accepted = () => {
   const search_filter = useRef();
   const [searchQuery, setSearchQuery] = useState(false);
   useEffect(() => {
+    getData()
     if (accepted_data) {
       setAccData(
         accepted_data.filter(
@@ -519,232 +476,6 @@ const Accepted = () => {
 
   return (
     <div className="accepted_page">
-      <div className="filter_accepted">
-        <div className="from_pay">
-          <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>من:</h5>
-
-          <div className="from_input">
-            <input
-              value={fromname ? fromname : ""}
-              onFocus={() => setshowfrom(true)}
-              // onBlur={() => setshowfrom(false)}
-              type="text"
-              placeholder=""
-            />
-            {!showfrom ? (
-              <img
-                onClick={() => {
-                  setshowfrom(true);
-                }}
-                style={{ width: "20px" }}
-                src={require("../../../assets/bottomarrow.png")}
-                alt=""
-              />
-            ) : (
-              <img
-                onClick={() => {
-                  setshowfrom(false);
-                }}
-                style={{ width: "20px" }}
-                src={require("../../../assets/uparrow.png")}
-                alt=""
-              />
-            )}
-            {fromdata !== "" ? (
-              <div className="pay_method pay_input">
-                {paymentmethods
-                  .filter((it) => it.id * 1 == fromdata * 1)
-                  .map((item) => {
-                    <div className="pay_method">
-                      <img
-                        style={{ width: "20px" }}
-                        src={item.wallet_logo}
-                        alt=""
-                      />
-                      <h4>{item.wallet_name ? item.wallet_name : ""}</h4>
-                      <h6>
-                        {item.minimum_order_val && item.minimum_order_val != ""
-                          ? "(" + item.minimum_order_val + ")"
-                          : "none"}
-                      </h6>
-                    </div>;
-                  })}
-              </div>
-            ) : null}
-            {showfrom ? (
-              <div className="pay_methods">
-                {paymentmethods.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => {
-                        setfromdata(item.wallet_id);
-                        setfromname(item.wallet_name);
-                        setshowfrom(false);
-                      }}
-                      className="pay_method"
-                    >
-                      <img
-                        style={{ width: "20px" }}
-                        src={item.wallet_logo}
-                        alt=""
-                      />
-                      <h4>{item.wallet_name ? item.wallet_name : ""}</h4>
-                      <h6>
-                        {item.minimum_order_val && item.minimum_order_val != ""
-                          ? "(" + item.minimum_order_val + ")"
-                          : "none"}
-                      </h6>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
-        </div>
-
-        <div className="from_pay">
-          <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>إلى:</h5>
-
-          <div className="from_input">
-            <input
-              value={toname ? toname : ""}
-              onFocus={() => setshowto(true)}
-              // onBlur={() => setshowto(false)}
-              type="text"
-              placeholder=""
-            />
-            {!showto ? (
-              <img
-                onClick={() => {
-                  setshowto(true);
-                }}
-                style={{ width: "20px" }}
-                src={require("../../../assets/bottomarrow.png")}
-                alt=""
-              />
-            ) : (
-              <img
-                onClick={() => {
-                  setshowto(false);
-                }}
-                style={{ width: "20px" }}
-                src={require("../../../assets/uparrow.png")}
-                alt=""
-              />
-            )}
-            {todata !== "" ? (
-              <div className="pay_method pay_input">
-                {paymentmethods
-                  .filter((it) => it.id * 1 == fromdata * 1)
-                  .map((item) => {
-                    <div className="pay_method">
-                      <img
-                        style={{ width: "20px" }}
-                        src={item.wallet_logo}
-                        alt=""
-                      />
-                      <h4>{item.wallet_name ? item.wallet_name : ""}</h4>
-                      <h6>
-                        ((
-                        {item.minimum_order_val && item.minimum_order_val != ""
-                          ? "(" + item.minimum_order_val + ")"
-                          : "none"}
-                        ))
-                      </h6>
-                    </div>;
-                  })}
-              </div>
-            ) : null}
-            {showto ? (
-              <div className="pay_methods">
-                {paymentmethods.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => {
-                        settodata(item.wallet_id);
-                        settoname(item.wallet_name);
-                        setshowto(false);
-                      }}
-                      className="pay_method"
-                    >
-                      <img
-                        style={{ width: "20px" }}
-                        src={item.wallet_logo}
-                        alt=""
-                      />
-                      <h4>{item.wallet_name ? item.wallet_name : ""}</h4>
-                      <h6>
-                        {item.minimum_order_val && item.minimum_order_val != ""
-                          ? "(" + item.minimum_order_val + ")"
-                          : "none"}
-                      </h6>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
-        </div>
-        <form
-          className="filterForm"
-          action="#"
-          onSubmit={(e) => {
-            e.preventDefault();
-            getData();
-          }}
-        >
-          <div className="date_filter">
-            <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>من:</h5>
-            <input
-              type="date"
-              onChange={(e) => setDate(e.currentTarget.value)}
-              required
-            />
-          </div>
-          <div className="date_filter">
-            <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>إلى:</h5>
-            <input
-              type="date"
-              onChange={(e) => setDateTo(e.currentTarget.value)}
-              required
-            />
-          </div>
-          <button className="btn btn-success">
-            عرض (حدد تاريخ أولا لإظهار العمليات)
-          </button>
-        </form>
-      </div>
-      <div className="date_filter">
-        <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>
-          حالة العملية:
-        </h5>
-        <Select
-          styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              borderColor: state.isFocused ? "grey" : "red",
-            }),
-          }}
-          defaultValue={status}
-          onChange={setStatus}
-          options={options}
-        />
-      </div>
-      <div className="search_filter">
-        <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>رقم العملية</h5>
-        <div style={{ display: "flex", gap: "10px" }}>
-          <input type="text" ref={search_filter} />
-          <button
-            className="btn btn-success"
-            onClick={() => setSearchQuery(search_filter?.current?.value)}
-          >
-            {" "}
-            بحث{" "}
-          </button>
-        </div>
-      </div>
       <Table dataSource={acc_data} columns={renderdata} />
       <Modal
         title="تأكيد العمليه"
@@ -826,9 +557,9 @@ const Accepted = () => {
         }}
       >
         <div className="user_data_comp">
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <div
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 openImageViewer(0);
               }}
@@ -837,10 +568,10 @@ const Accepted = () => {
                 <TransformComponent>
                   <img
                     style={{
-                      width: '200px',
-                      height: '100px',
-                      margin: 'auto',
-                      display: 'block',
+                      width: "200px",
+                      height: "100px",
+                      margin: "auto",
+                      display: "block",
                     }}
                     src={userData.confirm_identity_front}
                     alt="test"
@@ -886,4 +617,4 @@ const Accepted = () => {
   );
 };
 
-export default Accepted;
+export default History;

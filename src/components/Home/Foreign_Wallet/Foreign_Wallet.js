@@ -146,6 +146,8 @@ const Foreign_Wallet = () => {
                   wallet_name: record.wallet_name,
                   sell_rate: record.sell_rate,
                   buy_rate: record.buy_rate,
+                  ratio_partner:record?.ratio_partner
+
                 });
 
               }}
@@ -353,6 +355,21 @@ const Foreign_Wallet = () => {
               id="para2"
             />
           </div>
+
+
+          <div>
+            <label for="para2">نسبة كل شريك</label>
+            <input
+              onChange={(e) => {
+                setwalletdata({
+                  ...walletdata,
+                  ratio_partner: e.target.value,
+                });
+              }}
+              type="text"
+              id="para2"
+            />
+          </div>
           <button className="btn btn-primary">إضافة</button>
         </form>
       ) : null}
@@ -406,6 +423,19 @@ const Foreign_Wallet = () => {
               }}
               type="text"
               value={updatewallet.minimum_order_val}
+            />
+          </div>
+          <div>
+            <h5>نسبة كل شريك</h5>
+            <input
+              value={updatewallet?.ratio_partner}
+              onChange={(e) => {
+                setupdatewallet({
+                  ...updatewallet,
+                  ratio_partner: e.target.value,
+                });
+              }}
+              type="text"
             />
           </div>
         </form>
