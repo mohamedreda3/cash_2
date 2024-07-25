@@ -3,6 +3,7 @@ import { onValue, push, ref, remove, update, get } from "firebase/database";
 import { useInView } from "react-intersection-observer";
 import "./adminPanel.css";
 import { database } from "./firebase";
+import moment from "moment/moment";
 
 const AdminPanel = ({ isHeader, setIfUnRead, setUnReadCountChats }) => {
   const [chats, setChats] = useState([]);
@@ -178,7 +179,7 @@ const AdminPanel = ({ isHeader, setIfUnRead, setUnReadCountChats }) => {
       console.error("Error marking messages as read:", error);
     }
   };
-
+  const [token, setToken] = useState(null);
   // Function to handle click on a chat item
   const handleClickChat = async (chatId) => {
     setSelectedChatId(chatId);
@@ -215,14 +216,14 @@ const AdminPanel = ({ isHeader, setIfUnRead, setUnReadCountChats }) => {
         );
         await update(messageRef, {
           text: newMessage,
-          editedAt: new Date().toISOString(),
+          editedAt: moment().format('MMMM Do YYYY, h:mm a'),
         });
         setEditMessageId(null);
       } else {
         const messagesRef = ref(database, `chats/${selectedChatId}/messages`);
         await push(messagesRef, {
           text: newMessage,
-          createdAt: new Date().toISOString(),
+          createdAt: moment().format('MMMM Do YYYY, h:mm a'),
           from: "Admin",
           displayName: "Admin",
           read: false,
@@ -230,6 +231,7 @@ const AdminPanel = ({ isHeader, setIfUnRead, setUnReadCountChats }) => {
         });
       }
       setNewMessage("");
+    
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -346,7 +348,7 @@ const ChatMessage = ({
       }`}
     >
       <strong>{msg.displayName}</strong>
-      <span>{new Date(msg.createdAt).toLocaleString()}</span>
+      <span>{msg.createdAt}</span>
       {msg.text}
       {msg.read && <span className="seen">Seen</span>}
       {msg.from === "Admin" && (

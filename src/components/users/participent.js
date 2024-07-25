@@ -181,12 +181,13 @@ const Participent = () => {
   const [showTreats, setShowTreats] = useState(false);
   const [withdrawConfirm, setWithDrawConfirm] = useState(false);
   const renderReqdata = [
+   
     {
-      title: "الكمية",
+      title: "اسم الشريك",
       dataIndex: "amount",
-      render: (_, record) => (
-        <Space>{parseFloat(record?.amount) / 100} جنية</Space>
-      ),
+      render: (_, record) => {
+        return <Space>{record?.name}</Space>;
+      },
     },
     {
       title: "تاريخ",

@@ -116,6 +116,13 @@ const ReqGet = () => {
 
   const renderReqdata = [
     {
+      title: "اسم الشريك",
+      dataIndex: "amount",
+      render: (_, record) => {
+        return <Space>{record?.name}</Space>;
+      },
+    },
+    {
       title: "الكمية",
       dataIndex: "amount",
       key: "amount",
@@ -145,7 +152,7 @@ const ReqGet = () => {
         { text: "تم الرفض", value: "refused" },
         { text: "تم الاستلام", value: "done" },
       ],
-      defaultFilteredValue : ['request'], 
+      defaultFilteredValue: ["request"],
       onFilter: (value, record) => {
         return record.status === value;
       },
